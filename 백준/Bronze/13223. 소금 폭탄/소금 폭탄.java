@@ -15,7 +15,7 @@ public class Main {
             e.printStackTrace();
         }
     }
-
+    
     private static String solution(BufferedReader reader) throws IOException {
         String[] nowTimeArray = reader.readLine().split(":");
         String[] targetTimeArray = reader.readLine().split(":");
@@ -25,16 +25,7 @@ public class Main {
             target = target.plusDays(1);
         }
         Duration duration = Duration.between(now, target);
-        return getFormattedTimeFromDuration(duration);
-    }
-
-    private static String getFormattedTimeFromDuration(Duration duration) {
-        String hours = String.format("%02d", duration.toHours());
-        String minutes = String.format("%02d", duration.toMinutes() % 60);
-        String seconds = String.format("%02d", duration.getSeconds() % 60);
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(hours).append(":").append(minutes).append(":").append(seconds);
-        return stringBuilder.toString();
+        return String.format("%02d:%02d:%02d", duration.toHours(), duration.toMinutes() % 60, duration.getSeconds() % 60);
     }
 
     private static LocalDateTime getDateTime(String[] timeArray) {
