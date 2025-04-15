@@ -19,8 +19,7 @@ public class Main {
         int rowCount = widthHeight[0];
         int colCount = widthHeight[1];
         String[][] map = getCastle(reader, rowCount, colCount);
-        int row = 0;
-        row = getRowCount(rowCount, map, row);
+        int row = getRowCount(rowCount, map);
         int col = getColCount(rowCount, colCount, map);
         int result = Math.max(row, col);
         return result;
@@ -35,7 +34,8 @@ public class Main {
         return map;
     }
 
-    private static int getRowCount(int rowCount, String[][] map, int row) {
+    private static int getRowCount(int rowCount, String[][] map) {
+        int row = 0;
         for(int i = 0; i< rowCount; i++) {
             if(isContainsX(map[i])) {
                 continue;
