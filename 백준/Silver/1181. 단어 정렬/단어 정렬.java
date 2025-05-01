@@ -10,7 +10,8 @@ public class Main {
             String result = solution(reader);
             System.out.printf("%s", result);
         } catch (IOException e) {
-
+            System.err.println("An IOException occurred: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
