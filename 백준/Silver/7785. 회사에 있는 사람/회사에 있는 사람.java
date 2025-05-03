@@ -18,7 +18,7 @@ public class Main {
 
     private static String solution(BufferedReader br) throws IOException {
         int count = Integer.parseInt(br.readLine());
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = new TreeMap<>();
         for(int i=0; i<count; i++) {
             String[] input = br.readLine().split(" ");
             String name = input[0];
@@ -29,10 +29,12 @@ public class Main {
                 map.remove(name);
             }
         }
-        List<String> list = new ArrayList<>(map.keySet());
-        Collections.sort(list, Collections.reverseOrder());
+        Set<String> keySet = map.keySet();
+        List<String> list = new ArrayList<>(keySet);
+
         StringBuilder sb = new StringBuilder();
-        for (String name : list) {
+        for(int i=list.size()-1; i>=0; i--) {
+            String name = list.get(i);
             sb.append(name).append("\n");
         }
         return sb.toString();
