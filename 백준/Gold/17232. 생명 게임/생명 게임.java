@@ -44,10 +44,11 @@ public class Main {
 
     static char[][] nextState(char[][] current) {
         char[][] next = new char[N][M];
+        int[][] prefixSum = computePrefixSum(current);
 
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < M; j++) {
-                int cnt = countNeighbors(current, i, j);
+                int cnt = countNeighbors(prefixSum, i, j);
 
                 if (current[i][j] == '*') {
                     next[i][j] = (cnt >= a && cnt <= b) ? '*' : '.';
@@ -59,22 +60,34 @@ public class Main {
         return next;
     }
 
-    static int countNeighbors(char[][] board, int x, int y) {
-        int count = 0;
-        for (int dx = -K; dx <= K; dx++) {
-            for (int dy = -K; dy <= K; dy++) {
-                if (dx == 0 && dy == 0)
-                    continue; // 자기 자신 제외
-                int nx = x + dx;
-                int ny = y + dy;
+    static int countNeighbors(int[][] prefixSum, int x, int y) {
+        int x1 = Math.max(0, x - K);
+        int y1 = Math.max(0, y - K);
+        int x2 = Math.min(N - 1, x + K);
+        int y2 = Math.min(M - 1, y + K);
 
-                if (nx >= 0 && nx < N && ny >= 0 && ny < M) {
-                    if (board[nx][ny] == '*')
-                        count++;
-                }
-            }
-        }
-        return count;
+        int total = prefixSum[x2 + 1][y2 + 1];
+        if (x1 > 0) total -= prefixSum[x1][y2 + 1];
+        if (y1 > 0) total -= prefixSum[x2 + 1][y1];
+        if (x1 > 0 && y1 > 0) total += prefixSum[x1][y1];
+
+        // Exclude the current cell if it is within bounds
+        if (board[x][y] == '*') total--;
+
+        return total;
     }
 
+    static int[][] computePrefixSum(char[][] board) {
+        int[][] prefixSum = new int[N + 1][M + 1];
+
+        for (int i = 1; i <= N; i++) {
+            for (int j = 1; j <= M; j++) {
+                prefixSum[i][j] = (board[i - 1][j - 1] == '*' ? 1 : 0)
+                    + prefixSum[i - 1][j]
+                    + prefixSum[i][j - 1]
+                    - prefixSum[i - 1][j - 1];
+            }
+        }
+        return prefixSum;
+    }
 }
